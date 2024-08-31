@@ -1,7 +1,5 @@
 import mongoose, { Schema, Types } from "mongoose";
-import Artist from "./artist";
-import Album from "./album";
-
+import Album from "./Album";
 const trackShema = new mongoose.Schema({
   name: {
     type: String,

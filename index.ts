@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import config from "./config";
 import ArtistsRouter from "./routers/artists";
+import AlbumsRouter from "./routers/albums";
 
 const app = express();
 const port = 8000;
@@ -12,6 +13,7 @@ app.use(express.static("public"));
 app.use(cors());
 
 app.use("/artists", ArtistsRouter)
+app.use("/albums", AlbumsRouter)
 
 const run = async () => {
   await mongoose.connect(config.database);

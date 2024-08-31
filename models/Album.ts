@@ -1,5 +1,5 @@
 import mongoose, { Schema, Types } from "mongoose";
-import Artist from "./artist";
+import Artist from "./Artist";
 
 const albumShema = new mongoose.Schema({
   name: {

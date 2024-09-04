@@ -7,7 +7,7 @@ const TrackHistoryShema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  trackId: {
+  track: {
     type: String,
     required: true,
   },

@@ -21,8 +21,8 @@ const albumShema = new mongoose.Schema({
       message: "Artist does not exist",
     },
   },
-  date: {
-    type: Date,
+  year: {
+    type: Number,
     required: true,
   }
 });

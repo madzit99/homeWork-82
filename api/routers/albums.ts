@@ -38,7 +38,7 @@ AlbumsRouter.post(
     try {
       const albumData = {
         name: req.body.name,
-        date: req.body.date,
+        year: req.body.year,
         artist: req.body.artist,
         photo: req.file ? req.file.filename : null,
       };

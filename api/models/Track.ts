@@ -19,7 +19,11 @@ const trackShema = new mongoose.Schema({
   },
   duration: {
     type: String,
-  }
+  }, 
+  trackNumber: {
+    type: Number,
+    required: true, 
+  },
 });
 
 const Track = mongoose.model("Track", trackShema);

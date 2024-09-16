@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Track } from "../../type";
-import { fetchTracks } from "./TrackThunks";
-import { RootState } from "../../app/store";
+import { fetchTracks } from "./trackThunks";
 
 export interface TracksState {
   tracks: Track[];
@@ -36,11 +35,15 @@ const tracksSlice = createSlice({
         state.error = true;
       });
   },
+  selectors: {
+    selectTracks: (state) => state.tracks,
+    selectOneTrack: (state) => state.oneTrack,
+    selectLoading: (state) => state.loading,
+    selectError: (state) => state.error,
+  },
 });
 
 export const tracksReducer = tracksSlice.reducer;
 
-export const selectTracks = (state: RootState) => state.tracks.tracks;
-export const selectOneTrack = (state: RootState) => state.tracks.oneTrack;
-export const selectLoading = (state: RootState) => state.tracks.loading;
-export const selectError = (state: RootState) => state.tracks.error;
+export const { selectTracks, selectOneTrack, selectLoading, selectError } =
+  tracksSlice.selectors;

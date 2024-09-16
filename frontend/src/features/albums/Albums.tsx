@@ -22,7 +22,7 @@ const Albums: React.FC<Props> = ({ artistId }) => {
   return (
     <Grid container spacing={2}>
       {albums.map((album) => (
-        <Grid item key={album._id}>
+        <Grid item xs={4} key={album._id}>
           <AlbumsItem album={album} />
         </Grid>
       ))}

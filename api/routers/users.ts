@@ -43,4 +43,35 @@ usersRouter.post("/sessions", async (req, res) => {
   return res.send({ message: "Username and password correct!", user });
 });
 
+
+usersRouter.delete("/sessions", async (req, res, next) => {
+  try {
+    const headerValue = req.get("Authorization");
+    const successMessage = { message: "Success!" };
+
+    if (!headerValue) {
+      return res.send({ ...successMessage, stage: "No header" });
+    }
+
+    const [_bearer, token] = headerValue.split(" ");
+
+    if (!token) {
+      return res.send({ ...successMessage, stage: "No token" });
+    }
+
+    const user = await User.findOne({ token });
+
+    if (!user) {
+      return res.send({ ...successMessage, stage: "No user" });
+    }
+
+    user.generateToken();
+    await user.save();
+
+    return res.send({ ...successMessage, stage: "Success" });
+  } catch (e) {
+    return next(e);
+  }
+});
+
 export default usersRouter;

@@ -1,8 +1,8 @@
 export interface Artist {
-    _id: string;
-    name: string;
-    photo: string;
-    information: string;
+  _id: string;
+  name: string;
+  photo: string;
+  information: string;
 }
 
 export interface Album {
@@ -20,7 +20,6 @@ export interface Track {
   duration: string;
   trackNumber: string;
 }
-
 
 export interface RegisterMutation {
   username: string;
@@ -50,13 +49,17 @@ export interface LoginMutation {
   password: string;
 }
 
-
 export interface GlobalError {
   error: string;
 }
 
-
 export interface RegisterResponse {
   message: string;
   user: User;
+}
+
+export interface trackHistory {
+  artist: Artist;
+  track: Track;
+  datetime: Date;
 }

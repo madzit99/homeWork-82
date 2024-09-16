@@ -9,6 +9,18 @@ import Track from "../models/Track";
 
 const TrackHistoryRouter = Router();
 
+TrackHistoryRouter.get("/", auth, async (req: RequestWithUser, res, next) => {
+  try {
+    const results = await TrackHistory.find({ user: req.user?._id })
+      .populate("track", "name")
+      .populate("artist", "name")
+      .sort({ datetime: -1 });
+    return res.send(results);
+  } catch (error) {
+    return next(error);
+  }
+});
+
 TrackHistoryRouter.post("/", auth, async (req: RequestWithUser, res, next) => {
   try {
     const userId = req.user?._id;
@@ -38,6 +50,7 @@ TrackHistoryRouter.post("/", auth, async (req: RequestWithUser, res, next) => {
       user: userId,
       track: req.body.track,
       datetime: new Date(),
+      artist: artist._id,
     });
 
     await trackHistory.save();

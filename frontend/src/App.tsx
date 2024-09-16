@@ -6,6 +6,7 @@ import Tracks from "./features/tracks/Tracks";
 import { Typography } from "@mui/material";
 import Register from "./features/users/Register";
 import Login from "./features/users/Login";
+import TrackHistory from "./features/trackHistory/trackHistory";
 
 const App = () => {
   return (
@@ -17,9 +18,12 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Artists />} />
           <Route path="/artists/:id" element={<OneArtist />} />
+          <Route path="/trackHistory" element={<TrackHistory />} />
           <Route path="/albums/:id" element={<Tracks />} />
+
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          
           <Route
             path="*"
             element={<Typography variant="h1">Not found</Typography>}

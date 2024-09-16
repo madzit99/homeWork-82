@@ -14,6 +14,7 @@ import {
 } from "redux-persist";
 import persistStore from "redux-persist/es/persistStore";
 import { tracksReducer } from "../features/tracks/tracksSlice";
+import { trackHistoryReduser } from "../features/trackHistory/trackHistorySlice";
 
 const usersPersistConfig = {
   key: "store:users",
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
   albums: albumsReducer,
   tracks: tracksReducer,
   users: persistReducer(usersPersistConfig, usersReducer),
+  trackHistory: trackHistoryReduser,
 });
 
 export const store = configureStore({

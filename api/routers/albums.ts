@@ -4,7 +4,6 @@ import mongoose from "mongoose";
 import { imagesUpload } from "../multer";
 import permit from "../middleware/permit";
 import auth, { RequestWithUser } from "../middleware/auth";
-import { error } from "console";
 import Artist from "../models/Artist";
 
 const AlbumsRouter = Router();
@@ -72,6 +71,29 @@ AlbumsRouter.delete(
 
       await Artist.findByIdAndDelete(albumId);
       return res.send({ message: "Альбом удален" });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+AlbumsRouter.patch(
+  "/:id/togglePublished",
+  auth,
+  permit("admin"),
+  async (req: RequestWithUser, res, next) => {
+    try {
+      const albumId = req.params.id;
+      const album = await Album.findById(albumId);
+
+      if (!album) {
+        return res.status(404).send({ message: "Альбом не найден" });
+      }
+
+      album.isPublished = !album.isPublished;
+      album.save();
+
+      return res.send(album);
     } catch (error) {
       next(error);
     }

@@ -1,5 +1,4 @@
 import { Router } from "express";
-import Album from "../models/Album";
 import Track from "../models/Track";
 import mongoose from "mongoose";
 import permit from "../middleware/permit";
@@ -39,7 +38,6 @@ TrackRouter.post("/", permit("admin"), async (req, res, next) => {
 });
 
 
-
 TrackRouter.delete(
   "/:id",
   auth,
@@ -51,9 +49,33 @@ TrackRouter.delete(
       if (!track) {
         return res.status(404).send({ error: "Трек не найден." });
       }
-      
+
       await Track.findByIdAndDelete(trackId);
       return res.send({ message: "Трек удален" });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+
+TrackRouter.patch(
+  "/:id/togglePublished",
+  auth,
+  permit("admin"),
+  async (req: RequestWithUser, res, next) => {
+    try {
+      const tracktId = req.params.id;
+      const track = await Track.findById(tracktId);
+
+      if (!track) {
+        return res.status(404).send({ message: "Трек не найден" });
+      }
+
+      track.isPublished = !track.isPublished;
+      track.save();
+
+      return res.send(track);
     } catch (error) {
       next(error);
     }

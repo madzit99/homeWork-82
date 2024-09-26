@@ -30,6 +30,12 @@ const UserSchema = new Schema<UserFields>({
     type: String,
     required: true,
   },
+  role: {
+    type: String,
+    required: true,
+    default: "user",
+    enum: ["user", "admin"],
+  },
 });
 UserSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();

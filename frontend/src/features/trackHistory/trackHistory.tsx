@@ -25,7 +25,7 @@ const TrackHistory = () => {
     <Grid container justifyContent="center">
       {history && history.length > 0 ? (
         <>
-          <Typography variant="h3">Your track history</Typography>
+          <Typography variant="h3">История ваших треков</Typography>
           {history.map((historyItem) => (
             <OneTrackHistory
               key={Math.random()}
@@ -40,7 +40,7 @@ const TrackHistory = () => {
           variant="h1"
           sx={{ textAlign: "center", fontWeight: "bold" }}
         >
-          No history yet
+          Пока нет истории
         </Typography>
       )}
     </Grid>

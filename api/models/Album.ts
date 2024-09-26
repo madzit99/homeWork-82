@@ -21,6 +21,11 @@ const albumShema = new mongoose.Schema({
       message: "Artist does not exist",
     },
   },
+
+  isPublished: {
+    type : Boolean, 
+    default: false,
+  },
   year: {
     type: Number,
     required: true,

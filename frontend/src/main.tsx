@@ -6,6 +6,10 @@ import { BrowserRouter } from 'react-router-dom';
 import { store } from './app/store.ts';
 import theme from './theme.ts';
 import { ThemeProvider } from '@mui/material';
+import { addInterceptors } from './axiosApi.ts';
+
+
+addInterceptors(store);
 
 createRoot(document.getElementById("root")!).render(
     <Provider store={store}>

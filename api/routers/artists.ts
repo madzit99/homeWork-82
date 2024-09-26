@@ -2,6 +2,8 @@ import { Router } from "express";
 import Artist from "../models/Artist";
 import { imagesUpload } from "../multer";
 import mongoose from "mongoose";
+import permit from "../middleware/permit";
+import auth, { RequestWithUser } from "../middleware/auth";
 
 const ArtistsRouter = Router();
 
@@ -16,17 +18,15 @@ ArtistsRouter.get("/", async (req, res, next) => {
 
 ArtistsRouter.post(
   "/",
+  permit("admin"),
   imagesUpload.single("photo"),
   async (req, res, next) => {
     try {
-      const artistData = {
+      const artist = await Artist.create({
         name: req.body.name,
         information: req.body.information,
         photo: req.file ? req.file.filename : null,
-      };
-
-      const artist = new Artist(artistData);
-      await artist.save();
+      });
 
       return res.send(artist);
     } catch (error) {
@@ -36,6 +36,26 @@ ArtistsRouter.post(
 
       return next(error);
     }
+  }
+);
+
+ArtistsRouter.delete(
+  "/:id",
+  auth,
+  permit("admin"),
+  async (req: RequestWithUser, res, next) => {
+    try {
+      const artistId = req.params.id; // запроос на id артиста 
+      const artist = await Artist.findById(artistId) // ищем артиста по id 
+      if (!artist) {
+        return res.status(404).send({ error: "Артист не найден!" });
+      }
+      
+      await Artist.findByIdAndDelete(artistId); // иначе  если Артист не найден то удаляем Артиста с базы данных и отпровляем сообщение 
+      return res.send({ message: "Артист удален." })
+    } catch (error) {
+      next(error);
+    };
   }
 );
 

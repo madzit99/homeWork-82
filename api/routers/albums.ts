@@ -2,6 +2,10 @@ import { Router } from "express";
 import Album from "../models/Album";
 import mongoose from "mongoose";
 import { imagesUpload } from "../multer";
+import permit from "../middleware/permit";
+import auth, { RequestWithUser } from "../middleware/auth";
+import { error } from "console";
+import Artist from "../models/Artist";
 
 const AlbumsRouter = Router();
 
@@ -22,29 +26,26 @@ AlbumsRouter.get("/", async (req, res, next) => {
 });
 
 AlbumsRouter.get("/:id", async (req, res, next) => {
-    try{
-        const album = await Album.findById(req.params.id).populate("artist");
-        return res.send(album);
-    }catch (error) {
-        return next(error);
-    }
-} )
-
+  try {
+    const album = await Album.findById(req.params.id).populate("artist");
+    return res.send(album);
+  } catch (error) {
+    return next(error);
+  }
+});
 
 AlbumsRouter.post(
   "/",
+  permit("admin"),
   imagesUpload.single("photo"),
   async (req, res, next) => {
     try {
-      const albumData = {
+      const album = await Album.create({
         name: req.body.name,
         year: req.body.year,
         artist: req.body.artist,
         photo: req.file ? req.file.filename : null,
-      };
-
-      const album = new Album(albumData);
-      await album.save();
+      });
 
       return res.send(album);
     } catch (error) {
@@ -53,6 +54,26 @@ AlbumsRouter.post(
       }
 
       return next(error);
+    }
+  }
+);
+
+AlbumsRouter.delete(
+  "/:id",
+  auth,
+  permit("admin"),
+  async (req: RequestWithUser, res, next) => {
+    try {
+      const albumId = req.params.id;
+      const album = await Album.findById(albumId);
+      if (!album) {
+        return res.status(404).send({ error: "Альбом не найден." });
+      }
+
+      await Artist.findByIdAndDelete(albumId);
+      return res.send({ message: "Альбом удален" });
+    } catch (error) {
+      next(error);
     }
   }
 );

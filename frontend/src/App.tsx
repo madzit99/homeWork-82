@@ -8,6 +8,7 @@ import Register from "./features/users/Register";
 import Login from "./features/users/Login";
 import TrackHistory from "./features/trackHistory/trackHistory";
 import CreateArtist from "./features/artists/components/CreateArtist";
+import CreateNewAlbums from "./features/albums/Components/CreateNewAlbums";
 
 const App = () => {
 
@@ -23,6 +24,8 @@ const App = () => {
           <Route path="/trackHistory" element={<TrackHistory />} />
           <Route path="/albums/:id" element={<Tracks />} />{" "}
           <Route path="/artists/create" element={<CreateArtist />} />
+          <Route path="/albums/create" element={<CreateNewAlbums />} />
+          
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route

@@ -71,3 +71,10 @@ export interface ArtistMutation {
   info: string;
   photo: File | null;
 }
+
+export interface AlbumMutation {
+  name: string;
+  photo: File | null;
+  artist: string;
+  year: number;
+} 

@@ -81,7 +81,7 @@ const ArtistForm: React.FC<Props> = ({ onSubmit }) => {
       <Grid sx={{ mb: 2 }}>
         <Grid item>
           <Button type="submit" color="primary" variant="contained">
-            Создать
+            Опубликовать
           </Button>
         </Grid>
       </Grid>

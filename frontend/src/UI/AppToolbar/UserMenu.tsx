@@ -55,6 +55,11 @@ const UserMenu: React.FC<Props> = ({ user }) => {
             <Link to="/artists/create">Добавить нового Артиста</Link>
           </Typography>
         </MenuItem>
+        <MenuItem>
+          <Typography variant="h6" component="div" sx={{textAlign: "center"}}>
+            <Link to="/albums/create">Добавить новый альбом</Link>
+          </Typography>
+        </MenuItem>
         <MenuItem onClick={handleLogout}>Выход</MenuItem>
       </Menu>
     </>

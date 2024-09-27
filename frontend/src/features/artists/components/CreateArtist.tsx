@@ -5,12 +5,13 @@ import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { createNewArtist } from "../artistsThunks";
 import { selectUser } from "../../users/usersSlice";
 import ArtistForm from "./ArtistForm";
+import { ArtistMutation } from "../../../type";
 
-interface ArtistMutation {
-  name: string;
-  info: string;
-  photo: File | null;
-}
+// interface ArtistMutation {
+//   name: string;
+//   info: string;
+//   photo: File | null;
+// }
 
 const CreateNewArtist = () => {
   const dispatch = useAppDispatch();

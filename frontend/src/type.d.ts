@@ -78,3 +78,11 @@ export interface AlbumMutation {
   artist: string;
   year: number;
 } 
+
+export interface TrackMutation {
+  name: string;
+  duration: string;
+  trackNumber: number;
+  artist: string;
+  album: string;
+}

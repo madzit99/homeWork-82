@@ -10,8 +10,12 @@ import TrackHistory from "./features/trackHistory/trackHistory";
 import CreateArtist from "./features/artists/components/CreateArtist";
 import CreateNewAlbums from "./features/albums/Components/CreateNewAlbums";
 import CreateNewTrack from "./features/tracks/components/CreateNewTrack";
+import { useAppSelector } from "./app/hooks";
+import { selectUser } from "./features/users/usersSlice";
+import ProtectedRoute from "./UI/ProtectedRoute/ProtectedRoute";
 
 const App = () => {
+  const user = useAppSelector(selectUser);
 
   return (
     <>
@@ -24,9 +28,30 @@ const App = () => {
           <Route path="/artists/:id" element={<OneArtist />} />
           <Route path="/trackHistory" element={<TrackHistory />} />
           <Route path="/albums/:id" element={<Tracks />} />{" "}
-          <Route path="/artists/create" element={<CreateArtist />} />
-          <Route path="/albums/create" element={<CreateNewAlbums />} />
-          <Route path="/tracks/create" element={<CreateNewTrack />} />
+          <Route
+            path="/artists/create"
+            element={
+              <ProtectedRoute isAllowed={user && user.role === "admin"}>
+                <CreateArtist />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/albums/create"
+            element={
+              <ProtectedRoute isAllowed={user && user.role === "admin"}>
+                <CreateNewAlbums />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/tracks/create"
+            element={
+              <ProtectedRoute isAllowed={user && user.role === "admin"}>
+                <CreateNewTrack />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route

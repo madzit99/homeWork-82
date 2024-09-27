@@ -3,6 +3,7 @@ export interface Artist {
   name: string;
   photo: string;
   information: string;
+  isPublished: boolean;
 }
 
 export interface Album {
@@ -11,6 +12,7 @@ export interface Album {
   photo: string;
   artist: string;
   year: number;
+  isPublished: boolean;
 }
 
 export interface Track {
@@ -19,6 +21,7 @@ export interface Track {
   album: string;
   duration: string;
   trackNumber: string;
+  isPublished: boolean;
 }
 
 export interface RegisterMutation {

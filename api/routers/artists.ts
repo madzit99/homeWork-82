@@ -17,12 +17,12 @@ ArtistsRouter.get("/", async (req, res, next) => {
 });
 
 ArtistsRouter.post(
-  "/",
-  permit("admin"),
+  "/",auth,
   imagesUpload.single("photo"),
-  async (req, res, next) => {
+  async (req: RequestWithUser, res, next) => {
     try {
       const artist = await Artist.create({
+        user: req.user?._id,
         name: req.body.name,
         information: req.body.information,
         photo: req.file ? req.file.filename : null,

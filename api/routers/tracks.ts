@@ -20,9 +20,10 @@ TrackRouter.get("/", async (req, res, next) => {
   }
 });
 
-TrackRouter.post("/", permit("admin"), async (req, res, next) => {
+TrackRouter.post("/", auth, async (req: RequestWithUser, res, next) => {
   try {
     const track = await Track.create({
+      user: req.user?._id,
       name: req.body.name,
       album: req.body.album,
       duration: req.body.duration,

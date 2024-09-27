@@ -52,7 +52,13 @@ const run = async () => {
       info: "Rap",
       photo: "fixtures/scriptonit.jpg",
       isPublished: true,
-    }
+    },
+    // {
+    //   name: "Djigan",
+    //   info: "Rap",
+    //   photo: "",
+    //   isPublished: true,
+    // }
   );
 
   const [Hajime, Yamakasi, Uroboros, House] = await Album.create(
@@ -83,7 +89,10 @@ const run = async () => {
       year: 2018,
       photo: "fixtures/house.jpg",
       isPublished: true,
-    }
+    },
+    // {
+    //   name: ""
+    // },
   );
 
   await Track.create(

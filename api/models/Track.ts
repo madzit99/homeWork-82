@@ -1,6 +1,10 @@
 import mongoose, { Schema, Types } from "mongoose";
 import Album from "./Album";
 const trackShema = new mongoose.Schema({
+  user: {
+    type: Schema.ObjectId,
+    ref: "User",
+  },
   name: {
     type: String,
     required: true,

@@ -2,6 +2,10 @@ import mongoose, { Schema, Types } from "mongoose";
 import Artist from "./Artist";
 
 const albumShema = new mongoose.Schema({
+  user: {
+    type: Schema.ObjectId,
+    ref: "User",
+  },
   name: {
     type: String,
     required: true,
@@ -23,13 +27,13 @@ const albumShema = new mongoose.Schema({
   },
 
   isPublished: {
-    type : Boolean, 
+    type: Boolean,
     default: false,
   },
   year: {
     type: Number,
     required: true,
-  }
+  },
 });
 
 const Album = mongoose.model("Album", albumShema);

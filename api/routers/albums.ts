@@ -34,12 +34,12 @@ AlbumsRouter.get("/:id", async (req, res, next) => {
 });
 
 AlbumsRouter.post(
-  "/",
-  permit("admin"),
+  "/", auth, 
   imagesUpload.single("photo"),
-  async (req, res, next) => {
+  async (req: RequestWithUser, res, next) => {
     try {
       const album = await Album.create({
+        user: req.user?._id,
         name: req.body.name,
         year: req.body.year,
         artist: req.body.artist,

@@ -4,7 +4,6 @@ import { selectAlbums } from "./albumsSlice";
 import { fetchAlbums } from "./albumsThunks";
 import { Grid } from "@mui/material";
 import AlbumsItem from "./AlbumsItem";
-// import { selectUser } from "../users/usersSlice";
 
 interface Props {
   artistId: string;
@@ -13,7 +12,6 @@ interface Props {
 const Albums: React.FC<Props> = ({ artistId }) => {
   const dispatch = useAppDispatch();
   const albums = useAppSelector(selectAlbums);
-  // const user = useAppSelector(selectUser);
 
   useEffect(() => {
     if (artistId) {
@@ -25,11 +23,9 @@ const Albums: React.FC<Props> = ({ artistId }) => {
     <Grid container spacing={2}>
       {albums.map(
         (album) =>
-          // (album.isPublished || (user && user.role === "admin")) && (
             <Grid item xs={4} key={album._id}>
               <AlbumsItem album={album} />
             </Grid>
-          // )
       )}
     </Grid>
   );

@@ -5,14 +5,8 @@ import { useEffect } from "react";
 import { createNewAlbum } from "../albumsThunks";
 import { Container, Typography } from "@mui/material";
 import AlbumForm from "./AlbumForm";
+import { AlbumMutation } from "../../../type";
 
-
-interface AlbumMutation {
-  name: string;
-  photo: File | null;
-  artist: string;
-  year: number;
-}
 
 const CreateNewAlbums = () => {
   const dispatch = useAppDispatch();

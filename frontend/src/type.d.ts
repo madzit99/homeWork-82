@@ -68,7 +68,6 @@ export interface trackHistory {
   datetime: Date;
 }
 
-
 export interface ArtistMutation {
   name: string;
   info: string;
@@ -80,7 +79,7 @@ export interface AlbumMutation {
   photo: File | null;
   artist: string;
   year: number;
-} 
+}
 
 export interface TrackMutation {
   name: string;

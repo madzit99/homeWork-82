@@ -27,6 +27,7 @@ TrackRouter.post("/", auth, async (req: RequestWithUser, res, next) => {
       name: req.body.name,
       album: req.body.album,
       duration: req.body.duration,
+      trackNumber: req.body.trackNumber,
     });
 
     return res.send(track);

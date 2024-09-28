@@ -6,6 +6,7 @@ import { fetchAlbums } from "../../albums/albumsThunks";
 import { selectAlbums } from "../../albums/albumsSlice";
 import { TrackMutation } from "../../../type";
 import { fetchArtists } from "../../artists/artistsThunks";
+
 interface Props {
   onSubmit: (mutation: TrackMutation) => void;
 }
@@ -57,7 +58,7 @@ const TrackForm: React.FC<Props> = ({ onSubmit }) => {
             required
           />
         </Grid>
-        
+
         <Grid item xs>
           <TextField
             select

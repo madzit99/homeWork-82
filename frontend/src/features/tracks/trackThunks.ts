@@ -32,3 +32,22 @@ export const createTrack = createAsyncThunk<void, TrackMutation, { state: RootSt
     }
   }
 );
+
+export const deleteTrack = createAsyncThunk<
+  void,
+  string,
+  { state: RootState }
+>("track/delete", async (trackId: string, thunkApi) => {
+  try {
+    const state = thunkApi.getState();
+    const token = state.users.user?.token;
+
+    if (token) {
+      await axiosApi.delete(`/tracks/${trackId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+    }
+  } catch (error) {
+    console.error(error);
+  }
+});

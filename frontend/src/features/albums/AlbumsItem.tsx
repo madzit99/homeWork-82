@@ -7,21 +7,34 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate,  } from "react-router-dom";
 import { API_URL } from "../../constants.ts";
 import imageNotAvailable from "../../assets/image-not-found.png";
 import { Album } from "../../type";
+import { deleteAlbum } from "./albumsThunks.ts";
+import { useAppDispatch, useAppSelector } from "../../app/hooks.ts";
+import { selectUser } from "../users/usersSlice.ts";
 
 interface Props {
   album: Album;
 }
 
 const AlbumsItem: React.FC<Props> = ({ album }) => {
+  const user = useAppSelector(selectUser);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   let cardImage = imageNotAvailable;
 
   if (album.photo) {
     cardImage = API_URL + "/" + album.photo;
   }
+  const handleDelete = async () => {
+    if (album) {
+      await dispatch(deleteAlbum(album?._id));
+      navigate("/");
+    }
+  };
 
   return (
     <Grid item>
@@ -63,10 +76,19 @@ const AlbumsItem: React.FC<Props> = ({ album }) => {
           }}
           to={`/albums/${album._id}`}
         >
-          <Button variant="contained" sx={{ width: "100%" }}>
+          <Button variant="contained" sx={{ width: "100%", marginTop: "10px" }}>
             Открыть альбом
           </Button>
         </NavLink>
+        {user && user.role === "admin" && (
+          <Button
+            variant="contained"
+            sx={{ width: "100%", marginTop: "10px" }}
+            onClick={handleDelete}
+          >
+            Удалить альбом
+          </Button>
+        )}
       </Card>
     </Grid>
   );

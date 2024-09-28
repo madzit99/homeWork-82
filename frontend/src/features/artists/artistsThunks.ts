@@ -14,7 +14,6 @@ export const createNewArtist = createAsyncThunk<
   { state: RootState }
 >("artists/create", async (ArtistMutation, thunkApi) => {
   try {
-
     const state = thunkApi.getState();
     const token = state.users.user?.token;
 
@@ -28,6 +27,25 @@ export const createNewArtist = createAsyncThunk<
       });
 
       await axiosApi.post("/artists", formData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+    }
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+export const deleteArtist = createAsyncThunk<
+  void,
+  string,
+  { state: RootState }
+>("artists/delete", async (artistId: string, thunkApi) => {
+  try {
+    const state = thunkApi.getState();
+    const token = state.users.user?.token;
+
+    if (token) {
+      await axiosApi.delete(`/artists/${artistId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
     }

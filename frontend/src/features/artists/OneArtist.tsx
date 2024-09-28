@@ -3,11 +3,14 @@ import Albums from "../albums/Albums";
 
 const OneArtist = () => {
   const { id } = useParams<{ id?: string }>();
-    const artistId = id || "";
+  const artistId = id || "";
+
   return (
-    <div>
-      <Albums artistId={artistId} />
-    </div>
+    <>
+      <div>
+        <Albums artistId={artistId} />
+      </div>
+    </>
   );
 };
 

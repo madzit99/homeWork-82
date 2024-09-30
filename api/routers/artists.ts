@@ -45,12 +45,12 @@ ArtistsRouter.delete(
   permit("admin"),
   async (req: RequestWithUser, res, next) => {
     try {
-      const artistId = req.params.id; // запроос на id артиста
-      const artist = await Artist.findById(artistId); // ищем артиста по id
+      const artistId = req.params.id; 
+      const artist = await Artist.findById(artistId); 
       if (!artist) {
         return res.status(404).send({ error: "Артист не найден!" });
       }
-      await Artist.findByIdAndDelete(artistId); // иначе  если Артист не найден то удаляем Артиста с базы данных и отпровляем сообщение
+      await Artist.findByIdAndDelete(artistId);
       return res.send({ message: "Артист удален." });
     } catch (error) {
       next(error);

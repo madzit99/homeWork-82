@@ -51,3 +51,16 @@ export const deleteTrack = createAsyncThunk<
     console.error(error);
   }
 });
+
+export const togglePublishedTrack = createAsyncThunk<
+  void,
+  string,
+  { state: RootState }
+>("tracks/toggle", async (trackId) => {
+  try {
+    await axiosApi.patch(`/tracks/${trackId}/togglePublished`);
+  } catch (e) {
+    console.error(e);
+  }
+});
+

@@ -53,3 +53,15 @@ export const deleteArtist = createAsyncThunk<
     console.error(error);
   }
 });
+
+export const togglePublishedArtist = createAsyncThunk<
+  void,
+  string,
+  { state: RootState }
+>("artists/toggle", async (artistId) => {
+  try {
+    await axiosApi.patch(`/artists/${artistId}/togglePublished`);
+  } catch (e) {
+    console.error(e);
+  }
+});

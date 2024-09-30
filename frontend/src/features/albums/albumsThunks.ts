@@ -57,3 +57,15 @@ export const deleteAlbum = createAsyncThunk<void, string, { state: RootState }>(
     }
   }
 );
+
+export const togglePublishedAlbums = createAsyncThunk<
+  void,
+  string,
+  { state: RootState }
+>("albums/toggle", async (albumId) => {
+  try {
+    await axiosApi.patch(`/albums/${albumId}/togglePublished`);
+  } catch (e) {
+    console.error(e);
+  }
+});

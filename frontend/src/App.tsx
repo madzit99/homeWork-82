@@ -31,7 +31,7 @@ const App = () => {
           <Route
             path="/artists/create"
             element={
-              <ProtectedRoute isAllowed={user && user.role === "admin"}>
+              <ProtectedRoute isAllowed={!!user}>
                 <CreateArtist />
               </ProtectedRoute>
             }
@@ -39,7 +39,7 @@ const App = () => {
           <Route
             path="/albums/create"
             element={
-              <ProtectedRoute isAllowed={user && user.role === "admin"}>
+              <ProtectedRoute isAllowed={!!user}>
                 <CreateNewAlbums />
               </ProtectedRoute>
             }
@@ -47,7 +47,7 @@ const App = () => {
           <Route
             path="/tracks/create"
             element={
-              <ProtectedRoute isAllowed={user && user.role === "admin"}>
+              <ProtectedRoute isAllowed={!!user}>
                 <CreateNewTrack />
               </ProtectedRoute>
             }

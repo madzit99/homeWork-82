@@ -6,13 +6,14 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../users/usersSlice";
 import { sendTrackHistory } from "../trackHistory/trackHistoryThunk";
 import { useAppDispatch } from "../../app/hooks";
-import { deleteTrack, fetchTracks } from "./trackThunks";
+import { deleteTrack, fetchTracks, togglePublishedTrack } from "./trackThunks";
 
 interface Props {
   track: Track;
+  id: string;
 }
 
-const TracksItem: React.FC<Props> = ({ track }) => {
+const TracksItem: React.FC<Props> = ({ track, id }) => {
   const user = useSelector(selectUser);
   const dispatch = useAppDispatch();
 
@@ -35,6 +36,11 @@ const TracksItem: React.FC<Props> = ({ track }) => {
     }
   };
 
+  const handleToggle = async () => {
+    await dispatch(togglePublishedTrack(track ? track._id : ""));
+    await dispatch(fetchTracks(id));
+  };
+
   return (
     <Grid container alignItems="center" sx={{ mb: "5px" }}>
       <Grid item container justifyContent="center" xs={1}>
@@ -45,19 +51,43 @@ const TracksItem: React.FC<Props> = ({ track }) => {
           </Button>
         )}
       </Grid>
-      <Grid item xs={6}>
+      <Grid item xs={4}>
         <Typography variant="h5">{track.name}</Typography>
       </Grid>
       <Grid item xs={1} sx={{ ml: "auto", textAlign: "right" }}>
         <Typography variant="h5">{track.duration}</Typography>
       </Grid>
-      <Grid item xs={1} sx={{ ml: "auto", textAlign: "right" }}>
-        {user && user.role === "admin" && (
-          <Button variant="contained" sx={{maxWidth: "80%"}} onClick={handleDelete}>
+      {!track.isPublished ? (
+        <Grid item xs={1} sx={{ ml: "auto", textAlign: "right" }}>
+          <Typography variant="h5" color="red" sx={{ textAlign: "center" }}>
+            Трек не опубликован
+          </Typography>
+        </Grid>
+      ) : (
+        ""
+      )}
+      {user && user.role === "admin" && (
+        <Grid item xs={1} sx={{ ml: "auto", textAlign: "right" }}>
+          <Button
+            variant="contained"
+            sx={{ maxWidth: "80%", marginTop: "20px" }}
+            onClick={handleDelete}
+          >
             Удалить трек
           </Button>
-        )}
-      </Grid>
+        </Grid>
+      )}
+      {!track.isPublished && (
+        <Grid item xs={1} sx={{ ml: "auto", textAlign: "right" }}>
+          <Button
+            variant="contained"
+            sx={{ width: "100%", marginTop: "20px" }}
+            onClick={handleToggle}
+          >
+            Опубликовать трек
+          </Button>
+        </Grid>
+      )}
     </Grid>
   );
 };

@@ -7,19 +7,24 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import { NavLink, useNavigate,  } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { API_URL } from "../../constants.ts";
 import imageNotAvailable from "../../assets/image-not-found.png";
 import { Album } from "../../type";
-import { deleteAlbum } from "./albumsThunks.ts";
+import {
+  deleteAlbum,
+  fetchAlbums,
+  togglePublishedAlbums,
+} from "./albumsThunks.ts";
 import { useAppDispatch, useAppSelector } from "../../app/hooks.ts";
 import { selectUser } from "../users/usersSlice.ts";
 
 interface Props {
   album: Album;
+  artistId: string;
 }
 
-const AlbumsItem: React.FC<Props> = ({ album }) => {
+const AlbumsItem: React.FC<Props> = ({ album, artistId }) => {
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -34,6 +39,11 @@ const AlbumsItem: React.FC<Props> = ({ album }) => {
       await dispatch(deleteAlbum(album?._id));
       navigate("/");
     }
+  };
+
+  const handleToggle = async () => {
+    await dispatch(togglePublishedAlbums(album ? album._id : ""));
+    await dispatch(fetchAlbums(artistId));
   };
 
   return (
@@ -67,7 +77,14 @@ const AlbumsItem: React.FC<Props> = ({ album }) => {
             mx: "auto",
           }}
           image={cardImage}
-        />
+        />{" "}
+        {!album.isPublished ? (
+          <Typography variant="h5" color="red" sx={{ textAlign: "center" }}>
+            Не опубликован
+          </Typography>
+        ) : (
+          ""
+        )}
         <NavLink
           style={{
             textDecoration: "none",
@@ -87,6 +104,15 @@ const AlbumsItem: React.FC<Props> = ({ album }) => {
             onClick={handleDelete}
           >
             Удалить альбом
+          </Button>
+        )}
+        {!album.isPublished && (
+          <Button
+            variant="contained"
+            sx={{ width: "100%", marginTop: "10px" }}
+            onClick={handleToggle}
+          >
+            Опубликовать альбом
           </Button>
         )}
       </Card>

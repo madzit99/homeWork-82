@@ -40,7 +40,7 @@ const run = async () => {
     }
   );
 
-  const [Miyagi, Scriptonit] = await Artist.create(
+  const [Miyagi, Scriptonit, Djigan] = await Artist.create(
     {
       name: "Miyagi",
       info: "Rap",
@@ -53,15 +53,15 @@ const run = async () => {
       photo: "fixtures/scriptonit.jpg",
       isPublished: true,
     },
-    // {
-    //   name: "Djigan",
-    //   info: "Rap",
-    //   photo: "",
-    //   isPublished: true,
-    // }
+    {
+      name: "Djigan",
+      info: "Rap",
+      photo: "fixtures/gigan.jpg",
+      isPublished: false,
+    }
   );
 
-  const [Hajime, Yamakasi, Uroboros, House] = await Album.create(
+  const [Hajime, Yamakasi, Uroboros, House, Cold_Hear] = await Album.create(
     {
       name: "Hajime",
       artist: Miyagi,
@@ -90,9 +90,13 @@ const run = async () => {
       photo: "fixtures/house.jpg",
       isPublished: true,
     },
-    // {
-    //   name: ""
-    // },
+    {
+      name: "Холодное сердце",
+      artist: Djigan,
+      year: 2012,
+      photo: "fixtures/coldheart.jpeg",
+      isPublished: false,
+    }
   );
 
   await Track.create(
@@ -235,6 +239,27 @@ const run = async () => {
       duration: "4:07",
       trackNumber: 5,
       isPublished: true,
+    },
+    {
+      name: "Отпусти",
+      album: Cold_Hear,
+      duration: "4:07",
+      trackNumber: 1,
+      isPublished: false,
+    },
+    {
+      name: "Холодное сердце",
+      album: Cold_Hear,
+      duration: "4:07",
+      trackNumber: 2,
+      isPublished: false,
+    },
+    {
+      name: "Ты рядом",
+      album: Cold_Hear,
+      duration: "4:07",
+      trackNumber: 3,
+      isPublished: false,
     }
   );
 

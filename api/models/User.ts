@@ -36,6 +36,8 @@ const UserSchema = new Schema<UserFields>({
     default: "user",
     enum: ["user", "admin"],
   },
+  displayName: String,
+  googleId: String,
 });
 UserSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();

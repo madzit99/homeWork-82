@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 import {
-    Alert,
+  Alert,
   Avatar,
   Box,
   Button,
@@ -17,8 +17,9 @@ import {
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import { LoginMutation } from "../../type";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { login } from "./usersThunks";
+import { googleLogin, login } from "./usersThunks";
 import { selectLoginError } from "./usersSlice";
+import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
   const dispatch = useAppDispatch();
@@ -38,6 +39,13 @@ const Login = () => {
     event.preventDefault();
     await dispatch(login(state)).unwrap();
     navigate("/");
+  };
+
+  const googleLoginHandler = async (credentialResponse: CredentialResponse) => {
+    if (credentialResponse.credential) {
+      await dispatch(googleLogin(credentialResponse.credential)).unwrap();
+      navigate("/");
+    }
   };
 
   return (
@@ -61,6 +69,14 @@ const Login = () => {
             {error.error}
           </Alert>
         )}
+        <Box sx={{ pt: 2 }}>
+          <GoogleLogin
+            onSuccess={googleLoginHandler}
+            onError={() => {
+              console.log("Ошибка при входе  в аккаунт");
+            }}
+          />
+        </Box>
         <Box component="form" onSubmit={submitFormHandler} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>

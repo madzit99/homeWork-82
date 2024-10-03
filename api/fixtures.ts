@@ -28,15 +28,19 @@ const run = async () => {
 
   await User.create(
     {
-      username: "admin",
+      username: "admin@gmail.com",
       password: "123321",
+      confirmPassword: "123321",
       role: "admin",
       token: crypto.randomUUID(),
+      displayName: "admin",
     },
     {
-      username: "user",
+      username: "user@gmail.com",
       password: "123321",
+      confirmPassword: "123321",
       token: crypto.randomUUID(),
+      displayName: "user",
     }
   );
 

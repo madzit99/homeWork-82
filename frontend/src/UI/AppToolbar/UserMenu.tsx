@@ -1,9 +1,17 @@
 import React, { useState } from "react";
-import { Button, Menu, MenuItem, Typography, styled } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  Menu,
+  MenuItem,
+  Typography,
+  styled,
+} from "@mui/material";
 import { NavLink } from "react-router-dom";
 import { useAppDispatch } from "../../app/hooks";
 import { logout } from "../../features/users/usersThunks";
 import { User } from "../../type";
+import { API_URL } from "../../constants";
 
 interface Props {
   user: User;
@@ -38,6 +46,8 @@ const UserMenu: React.FC<Props> = ({ user }) => {
       <Button onClick={handleClick} color="inherit">
         Привет, {user.displayName ? user.displayName : user.username}!
       </Button>
+
+      <Avatar alt={user.displayName} src={`${API_URL}/${user.avatar}`} />
 
       <Menu
         anchorEl={anchorEl}

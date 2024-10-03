@@ -50,7 +50,11 @@ const UserSchema = new Schema<
       default: "user",
       enum: ["user", "admin"],
     },
-    displayName: String,
+    displayName: {
+      type: String,
+      required: true,
+    },
+    avatar: String,
     googleID: String,
   },
   {

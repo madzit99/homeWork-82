@@ -29,6 +29,7 @@ export interface RegisterMutation {
   password: string;
   confirmPassword: string;
   displayName: string;
+  avatar: File | null;
 }
 
 export interface User {
@@ -36,6 +37,7 @@ export interface User {
   username: string;
   token: string;
   role: string;
+  avatar: string;
   displayName?: string;
 }
 

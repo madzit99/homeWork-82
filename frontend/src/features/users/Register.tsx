@@ -14,6 +14,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectRegisterError } from "./usersSlice";
 import { RegisterMutation } from "../../type";
 import { register } from "./usersThunks";
+import FileInput from "../../UI/FileInput/FileInput";
 
 const Register = () => {
   const dispatch = useAppDispatch();
@@ -25,6 +26,7 @@ const Register = () => {
     password: "",
     confirmPassword: "",
     displayName: "",
+    avatar: null,
   });
 
   const getFieldError = (fieldName: string) => {
@@ -46,6 +48,16 @@ const Register = () => {
       navigate("/");
     } catch (e) {
       console.log(error);
+    }
+  }; 
+  
+  const fileInputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, files } = e.target;
+    if (files) {
+      setState((prevState) => ({
+        ...prevState,
+        [name]: files[0],
+      }));
     }
   };
 
@@ -120,6 +132,13 @@ const Register = () => {
               onChange={inputChangeHandler}
               error={Boolean(getFieldError("confirmPassword"))}
               helperText={getFieldError("confirmPassword")}
+            />
+          </Grid>
+          <Grid item>
+            <FileInput
+              label="Аватар"
+              name="avatar"
+              onChange={fileInputChangeHandler}
             />
           </Grid>
         </Grid>

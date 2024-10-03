@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
-import { Avatar, Box, Button, Grid, TextField, Typography, Link } from '@mui/material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { selectRegisterError } from './usersSlice';
-import { RegisterMutation } from '../../type';
-import { register } from './usersThunks';
+import React, { useState } from "react";
+import {
+  Avatar,
+  Box,
+  Button,
+  Grid,
+  TextField,
+  Typography,
+  Link,
+} from "@mui/material";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { selectRegisterError } from "./usersSlice";
+import { RegisterMutation } from "../../type";
+import { register } from "./usersThunks";
 
 const Register = () => {
   const dispatch = useAppDispatch();
@@ -13,8 +21,10 @@ const Register = () => {
   const error = useAppSelector(selectRegisterError);
 
   const [state, setState] = useState<RegisterMutation>({
-    username: '',
-    password: '',
+    username: "",
+    password: "",
+    confirmPassword: "",
+    displayName: "",
   });
 
   const getFieldError = (fieldName: string) => {
@@ -33,9 +43,9 @@ const Register = () => {
     event.preventDefault();
     try {
       await dispatch(register(state)).unwrap();
-      navigate('/');
-    } catch (error) {
-      console.log(error)
+      navigate("/");
+    } catch (e) {
+      console.log(error);
     }
   };
 
@@ -64,13 +74,26 @@ const Register = () => {
           <Grid item>
             <TextField
               required
-              label="Имя пользователя"
+              type="email"
+              label="Email пользователя"
               name="username"
               autoComplete="new-username"
               value={state.username}
               onChange={inputChangeHandler}
               error={Boolean(getFieldError("username"))}
               helperText={getFieldError("username")}
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              required
+              label="Отображаемое имя"
+              name="displayName"
+              autoComplete="new-display-name"
+              value={state.displayName}
+              onChange={inputChangeHandler}
+              error={Boolean(getFieldError("displayName"))}
+              helperText={getFieldError("displayName")}
             />
           </Grid>
           <Grid item>
@@ -84,6 +107,19 @@ const Register = () => {
               onChange={inputChangeHandler}
               error={Boolean(getFieldError("password"))}
               helperText={getFieldError("password")}
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              required
+              type="password"
+              label="Подтвердите пароль"
+              name="confirmPassword"
+              autoComplete="new-password"
+              value={state.confirmPassword}
+              onChange={inputChangeHandler}
+              error={Boolean(getFieldError("confirmPassword"))}
+              helperText={getFieldError("confirmPassword")}
             />
           </Grid>
         </Grid>

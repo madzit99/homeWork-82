@@ -1,58 +1,61 @@
 import express from "express";
 import User from "../models/User";
-import { Error } from "mongoose";
-import crypto from "crypto";
-import bcrypt from "bcrypt";
+import mongoose from "mongoose";
 import { OAuth2Client } from "google-auth-library";
 import config from "../config";
 
 const usersRouter = express.Router();
-
-const googleCliend = new OAuth2Client(config.google.clientId);
+const googleClient = new OAuth2Client(config.google.clientId);
 
 usersRouter.post("/", async (req, res, next) => {
   try {
     const user = new User({
       username: req.body.username,
       password: req.body.password,
-      token: crypto.randomUUID(),
+      confirmPassword: req.body.confirmPassword,
     });
+
+    user.generateToken();
 
     await user.save();
     return res.send(user);
   } catch (error) {
-    if (error instanceof Error.ValidationError) {
+    if (error instanceof mongoose.Error.ValidationError) {
       return res.status(400).send(error);
     }
+
     return next(error);
   }
 });
 
-usersRouter.post("/sessions", async (req, res) => {
-  const user = await User.findOne({ username: req.body.username });
+usersRouter.post("/sessions", async (req, res, next) => {
+  try {
+    const user = await User.findOne({ username: req.body.username });
 
-  if (!user) {
-    return res.status(400).send({ error: "Username not found" });
+    if (!user) {
+      return res.status(400).send({ error: "Username not found!" });
+    }
+
+    const isMatch = await user.checkPassword(req.body.password);
+
+    if (!isMatch) {
+      return res.status(400).send({ error: "Password is wrong!" });
+    }
+
+    user.generateToken();
+    await user.save();
+
+    return res.send(user);
+  } catch (error) {
+    return next(error);
   }
-
-  const isMatch = await bcrypt.compare(req.body.password, user.password);
-
-  if (!isMatch) {
-    return res.status(400).send({ error: "Password is wrong" });
-  }
-
-  user.token = crypto.randomUUID();
-  await user.save();
-
-  return res.send({ message: "Username and password correct!", user });
 });
 
-
 usersRouter.post("/google", async (req, res, next) => {
-  try{
-    const ticket = await googleCliend.verifyIdToken({
-     idToken: req.body.credential,
-     audience: config.google.clientId,
+  try {
+    const ticket = await googleClient.verifyIdToken({
+      idToken: req.body.credential,
+      audience: config.google.clientId,
     });
 
     const payload = ticket.getPayload();
@@ -76,9 +79,11 @@ usersRouter.post("/google", async (req, res, next) => {
     let user = await User.findOne({ googleID: id });
 
     if (!user) {
+      const newPassword = crypto.randomUUID();
       user = new User({
         username: email,
-        password: crypto.randomUUID(),
+        password: newPassword,
+        confirmPassword: newPassword,
         googleId: id,
         displayName,
       });
@@ -87,39 +92,31 @@ usersRouter.post("/google", async (req, res, next) => {
     user.generateToken();
     await user.save();
     return res.send(user);
-  }catch (error) {
-    next(error);
+  } catch (error) {
+    return next(error);
   }
-})
-
+});
 
 usersRouter.delete("/sessions", async (req, res, next) => {
   try {
     const headerValue = req.get("Authorization");
-    const successMessage = { message: "Success!" };
 
-    if (!headerValue) {
-      return res.send({ ...successMessage, stage: "No header" });
-    }
+    if (!headerValue) return res.status(204).send();
 
     const [_bearer, token] = headerValue.split(" ");
 
-    if (!token) {
-      return res.send({ ...successMessage, stage: "No token" });
-    }
+    if (!token) return res.status(204).send();
 
     const user = await User.findOne({ token });
 
-    if (!user) {
-      return res.send({ ...successMessage, stage: "No user" });
-    }
+    if (!user) return res.status(204).send();
 
     user.generateToken();
     await user.save();
 
-    return res.send({ ...successMessage, stage: "Success" });
-  } catch (e) {
-    return next(e);
+    return res.status(204).send();
+  } catch (error) {
+    return next(error);
   }
 });
 

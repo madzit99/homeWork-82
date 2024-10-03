@@ -1,10 +1,18 @@
+import { Model, Types } from "mongoose";
+
 export interface UserFields {
   username: string;
   password: string;
   token: string;
   role: string;
+  avatar: string;
   displayName?: string;
-  googleId?: string; 
+  googleID?: string;
+  __confirmPassword: string;
+}
+
+export interface UserVirtuals {
+  confirmPassword: string;
 }
 
 interface UserMethods {
@@ -12,4 +20,5 @@ interface UserMethods {
   generateToken(): void;
 }
 
-type UserModel = Model<UserFields, {}, UserMethods>;
+export type UserModel = Model<UserFields, {}, UserMethods, UserVirtuals>;
+

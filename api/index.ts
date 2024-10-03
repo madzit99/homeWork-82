@@ -15,11 +15,11 @@ app.use(express.json());
 app.use(express.static("public"));
 app.use(cors());
 
-app.use("/artists", ArtistsRouter)
-app.use("/albums", AlbumsRouter)
+app.use("/artists", ArtistsRouter);
+app.use("/albums", AlbumsRouter);
 app.use("/tracks", TrackRouter);
 app.use("/users", usersRouter);
-app.use("/trackHistory",  TrackHistoryRouter);
+app.use("/trackHistory", TrackHistoryRouter);
 
 const run = async () => {
   await mongoose.connect(config.database);
@@ -34,4 +34,3 @@ const run = async () => {
 };
 
 run().catch(console.error);
-

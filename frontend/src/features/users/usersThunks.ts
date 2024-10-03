@@ -5,7 +5,6 @@ import {
   GlobalError,
   LoginMutation,
   RegisterMutation,
-  RegisterResponse,
   User,
   ValidationError,
 } from "../../type";
@@ -38,14 +37,14 @@ export const login = createAsyncThunk<
   { rejectValue: GlobalError }
 >("users/login", async (loginMutation, { rejectWithValue }) => {
   try {
-    const { data: RegisterResponse } = await axiosApi.post<RegisterResponse>(
-      "users/sessions",
+    const { data: user } = await axiosApi.post<User>(
+      "/users/sessions",
       loginMutation
     );
-    return RegisterResponse.user;
+    return user;
   } catch (e) {
     if (isAxiosError(e) && e.response && e.response.status === 400) {
-      return rejectWithValue(e.response.data as GlobalError);
+      return rejectWithValue(e.response.data);
     }
 
     throw e;
@@ -63,13 +62,14 @@ export const logout = createAsyncThunk<void, undefined, { state: RootState }>(
   }
 );
 
+
 export const googleLogin = createAsyncThunk<
   User,
   string,
   { rejectValue: GlobalError }
 >("users/googleLogin", async (credential: string, { rejectWithValue }) => {
   try {
-    const { data: user } = await axiosApi.post("user/google", credential);
+    const { data: user } = await axiosApi.post<User>("users/google", credential);
     return user;
   } catch (error) {
     if (
@@ -79,6 +79,6 @@ export const googleLogin = createAsyncThunk<
     ) {
       return rejectWithValue(error.response.data);
     }
-    throw error
+    throw error;
   }
 });

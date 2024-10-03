@@ -32,14 +32,21 @@ const Login = () => {
 
   const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setState((prevState) => ({ ...prevState, [name]: value }));
+    setState((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
-  const submitFormHandler = async (event: React.FormEvent) => {
-    event.preventDefault();
-    await dispatch(login(state)).unwrap();
-    navigate("/");
-  };
+   const submitFormHandler = async (event: React.FormEvent) => {
+     event.preventDefault();
+     const loginMutation = {
+       username: state.username.trim().toLowerCase(),
+       password: state.password.trim(),
+     };
+     await dispatch(login(loginMutation)).unwrap();
+     navigate("/");
+   };
 
   const googleLoginHandler = async (credentialResponse: CredentialResponse) => {
     if (credentialResponse.credential) {
@@ -81,7 +88,8 @@ const Login = () => {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
-                label="Имя пользователя"
+                type="email"
+                label="Email пользователя"
                 name="username"
                 autoComplete="current-username"
                 value={state.username}
